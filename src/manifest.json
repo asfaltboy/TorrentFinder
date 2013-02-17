@@ -1,0 +1,32 @@
+{
+	"name": "torrent finder",
+	"homepage_url": "https://github.com/asfaltboy/torrent_finder",
+	"version": "0.1.0",
+	"manifest_version": 2,
+	"description": "find magnet links directly from any page",
+	"background": {
+		"scripts":
+			[
+				"jquery-1.7.1.min.js",
+				"settings.js",
+				"search.js",
+				"bg.js"
+			]
+	},
+	"permissions": [
+		"tabs",
+		"http://*.fenopy.se/",
+		"http://apify.ifc0nfig.com/",
+		"contextMenus"
+	],
+	"web_accessible_resources": [
+		"search_box.html"
+	],
+	"content_scripts": [
+		{
+			"matches": ["http://*/*", "https://*/*"],
+			"css": ["search_box.css"],
+			"js": ["jquery-1.7.1.min.js", "mustache.js", "cscript.js"]
+		}
+	]
+}
