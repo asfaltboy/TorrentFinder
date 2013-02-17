@@ -9,12 +9,12 @@ A chrome extension to shorten your search for torrents
 
 *TODO list:*
 
-[ ] Refactor search engines code to be more generic = easier adding new engines
-[ ] Make dynamically created div draggable + close button
-[ ] Add a nicer icon
-[ ] Add the ability to add custom engines (in options)
-[ ] Add setting to fetch other number of results (1, 3, 5, 10, custom)
-[ ] Add the ability to paginate the results + sort
+- [ ] Refactor search engines code to be more generic = easier adding new engines
+- [ ] Make dynamically created div draggable + close button
+- [ ] Add a nicer icon
+- [ ] Add the ability to add custom engines (in options)
+- [ ] Add setting to fetch other number of results (1, 3, 5, 10, custom)
+- [ ] Add the ability to paginate the results + sort
 
 ## Instructions
 
