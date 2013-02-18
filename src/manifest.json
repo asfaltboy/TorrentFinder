@@ -1,7 +1,7 @@
 {
 	"name": "torrent finder",
 	"homepage_url": "https://github.com/asfaltboy/torrent_finder",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"manifest_version": 2,
 	"description": "find magnet links directly from any page",
 	"background": {

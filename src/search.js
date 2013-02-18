@@ -1,6 +1,6 @@
 var _settings = window._settings || new Settings(), _search = null;
 
-$.ajax({
+$.ajaxSetup({
 	// url not set here; uses ping.php
 	cache: false,
 	contents: "json"
@@ -10,10 +10,13 @@ var Fenopy = function(sterm) {
 	var self = this;
 
 	self.data = [];
+	self.handle_error = function(data) {
+		console.log(data);
+		_search.push_results("fen", {name: "No results found"});
+	};
 	
 	self.searchComplete = function(data) {
-		console.log(data);
-		if (!_search || data.length < 1) return _search.push_results("fen", {name: "No results found"});
+		if (!_search || data.length < 1 || !(data instanceof Object)) return self.handle_error(data);
 		self.data = data;
 		var first = data[0];
 		_search.push_results("fen", {
@@ -26,7 +29,7 @@ var Fenopy = function(sterm) {
 	self.searchFenopy = function(keywords) {
 		var url = _settings.fenopy_api;
 		url += "?keyword=" + keywords + "&format=json&sort=peer";
-		$.getJSON(url, self.searchComplete);
+		$.getJSON(url, self.searchComplete).error(self.handle_error);
 	};
 
 	if (sterm) return self.searchFenopy(sterm);
@@ -36,10 +39,13 @@ var TPBay = function(sterm) {
 	var self = this;
 
 	self.data = [];
+	self.handle_error = function(data) {
+		console.log(data);
+		_search.push_results("tpb", {name: "No results found"});
+	};
 	
 	self.searchComplete = function(data) {
-		console.log(data);
-		if (!_search || data.length < 1) return _search.push_results("tpb", {});
+		if (!_search || data.length < 1 || !(data instanceof Object)) return self.handle_error(data);
 		self.data = data;
 		var first = data[0];
 		_search.push_results("tpb", {
@@ -52,7 +58,7 @@ var TPBay = function(sterm) {
 	self.searchTPBay = function(keywords) {
 		var url = _settings.tpb_api;
 		url += "?id=" + keywords + "&sort=seeders";
-		$.getJSON(url, self.searchComplete);
+		$.getJSON(url, self.searchComplete).error(self.handle_error);;
 	};
 
 	if (sterm) return self.searchTPBay(sterm);
@@ -81,10 +87,11 @@ var SearchHandler = function(sterm) {
 		// console.log(best_result);
 		self.results[provider] = best_result;
 		if (Object.keys(self.results).length === self.providers.length) {
-			self.cb.forEach(function(cb) {
+			var callbacks = self.cb;
+			self.cb = [];
+			callbacks.forEach(function(cb) {
 				cb(self.results);
 			});
-			self.cb = [];
 		}
 	};
 

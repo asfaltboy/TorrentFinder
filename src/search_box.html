@@ -1,4 +1,4 @@
-<div class="torrent_find_0d1fc2b95">
+<div class="torrent_find_0d1fc2b95" draggable="true">
 	<table>
 		<thead>
 			<tr>
@@ -11,10 +11,13 @@
 			{{#items}}
 				<tr>
 					<td>{{prov}}</td>
-					<td><a href="{{magnet}}">{{name}}</a></td>
+					<td><a {{href}}>{{name}}</a></td>
 					<td>{{seeds}}</td>
 				</tr>
 			{{/items}}
 		</tbody>
 	</table>
+
+	<div class="close">[x]</div>
+	<div class="minimize">[-]</div>
 </div>

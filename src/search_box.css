@@ -4,6 +4,8 @@
 	position: absolute;
 	z-index: 100000;
     display: none;
+    left: 0;
+    top: 0;
 }
 
 .torrent_find_0d1fc2b95 table {
@@ -55,4 +57,18 @@
 
 .torrent_find_0d1fc2b95 tr:nth-of-type(2n + 3) {
     background-color: #FBFDFF;
+}
+
+.torrent_find_0d1fc2b95 .close, .torrent_find_0d1fc2b95 .minimize {
+    cursor: pointer;
+    color: red;
+    position: absolute;
+    float: right;
+    font-weight: bold;
+    font-size: 12px;
+    top: 0;
+    right: 4px;
+}
+.torrent_find_0d1fc2b95 .minimize {
+    right: 20px;
 }

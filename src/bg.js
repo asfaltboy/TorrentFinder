@@ -16,7 +16,7 @@ var Background = function() {
 	self.handle_cs_response = function(response) {
 		if (response === undefined) return false;
 		if (response.status === "done") {
-			console.log("data was received successfully in extension");
+			console.log("data was received successfully in content script (page)");
 		}
 	};
 
@@ -26,12 +26,14 @@ var Background = function() {
 		_search.search(sterms || null, self.on_result);
 	};
 
-	self.cid = chrome.contextMenus.create(
+	chrome.contextMenus.removeAll(function() {
+		self.cid = chrome.contextMenus.create(
 		{
 			"title": self.title,
 			"contexts":["all"],
 			"onclick": self.search_from_context
 		});
+	});
 };
 
 _bkg = new Background();

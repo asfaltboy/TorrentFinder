@@ -81,10 +81,11 @@ var SearchHandler = function(sterm) {
 		// console.log(best_result);
 		self.results[provider] = best_result;
 		if (Object.keys(self.results).length === self.providers.length) {
-			self.cb.forEach(function(cb) {
+			var callbacks = self.cb;
+			self.cb = [];
+			callbacks.forEach(function(cb) {
 				cb(self.results);
 			});
-			self.cb = [];
 		}
 	};
 
