@@ -3,9 +3,9 @@
 A chrome extension to shorten your search for torrents
 
 
-    **WORK IN PROGRESS NOTICE:**
+ **WORK IN PROGRESS NOTICE:**
 
-    This project is an early stage of development (though it's already a working prototype) and thus code may be in less then optimal state when examined.
+ This project is an early stage of development (though it's already a working prototype) and thus code may be in less then optimal state when examined.
 
 *TODO list:*
 
