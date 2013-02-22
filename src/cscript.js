@@ -11,18 +11,41 @@ var SearchUI = function() {
 		});
 	};
 
+	self.calcOffset = function() {
+		var selection, allText, charsOffset, parentElement, parentOffset,
+			widthToAdd, upToSelection;
+
+		selection = window.getSelection();
+		allText = selection.baseNode.textContent;
+		charsOffset = selection.getRangeAt(0).startOffset;
+		parentElement = selection.baseNode.parentElement;
+		parentOffset = $(parentElement).offset();
+		widthToAdd = 0;
+		if (charsOffset) {
+			upToSelection = allText.slice(0, charsOffset);
+			$clone = $(parentElement).clone().offset({x: -99999, y: -99999})
+						.css({display: "inline-block"}).appendTo('body');
+			$clone.text(upToSelection);
+			widthToAdd = $clone.width();
+		}
+		parentOffset.left += widthToAdd;
+		parentOffset.top += $(parentElement).height() + $(window).scrollTop();
+		return parentOffset;
+	};
+
 	self.drawBox = function(data) {
-		var template_url = chrome.extension.getURL('search_box.html');
+		var template_url = chrome.extension.getURL('search_box.html'),
+			items = [], item, tb;
+
 		$.get(template_url, function(tmpl) {
-			var items = [], coords;
 			console.log('Rendering Mustache.js template...');
 			Object.keys(data).forEach(function(k) {
-				var item = data[k];
+				item = data[k];
 				item.prov = k;
 				item.href = (!item.magnet) ? '' : "href=" + item.magnet;
 				items.push(item);
 			});
-			var tb = Mustache.to_html(
+			tb = Mustache.to_html(
 				tmpl,
 				{
 					items: items
@@ -30,7 +53,7 @@ var SearchUI = function() {
 			);
 			$(self.selector).remove();
 			$('body').prepend(tb);
-			$(self.selector).fadeIn().drags();
+			$(self.selector).offset(self.calcOffset()).fadeIn().drags();
 			self.registerClickHandlers(self.selector);
 		});
 	};
