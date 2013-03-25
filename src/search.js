@@ -14,7 +14,7 @@ var Fenopy = function(sterm) {
 		console.log(data);
 		_search.push_results("fen", {name: "No results found"});
 	};
-	
+
 	self.searchComplete = function(data) {
 		if (!_search || data.length < 1 || !(data instanceof Object)) return self.handle_error(data);
 		self.data = data;
@@ -43,7 +43,7 @@ var TPBay = function(sterm) {
 		console.log(data);
 		_search.push_results("tpb", {name: "No results found"});
 	};
-	
+
 	self.searchComplete = function(data) {
 		if (!_search || data.length < 1 || !(data instanceof Object)) return self.handle_error(data);
 		self.data = data;
@@ -58,7 +58,7 @@ var TPBay = function(sterm) {
 	self.searchTPBay = function(keywords) {
 		var url = _settings.tpb_api;
 		url += "?id=" + keywords + "&sort=seeders";
-		$.getJSON(url, self.searchComplete).error(self.handle_error);;
+		$.getJSON(url, self.searchComplete).error(self.handle_error);
 	};
 
 	if (sterm) return self.searchTPBay(sterm);
