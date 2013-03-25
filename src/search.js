@@ -6,6 +6,13 @@ $.ajaxSetup({
 	contents: "json"
 });
 
+var QueryBuilder = function(search_provider, query) {
+	// TODO: this object will build a query string using the saved data of a search provider
+	// 1. get search provider settings + add callback to settings
+	// 2. build a query string from search provider settings
+	// 3. return query string
+};
+
 var Fenopy = function(sterm) {
 	var self = this;
 
@@ -16,7 +23,9 @@ var Fenopy = function(sterm) {
 	};
 
 	self.searchComplete = function(data) {
-		if (!_search || data.length < 1 || !(data instanceof Object)) return self.handle_error(data);
+		if (!_search || data.length < 1 || !(data instanceof Object))
+			return self.handle_error(data);
+
 		self.data = data;
 		var first = data[0];
 		_search.push_results("fen", {
@@ -33,6 +42,35 @@ var Fenopy = function(sterm) {
 	};
 
 	if (sterm) return self.searchFenopy(sterm);
+};
+
+var IsoHunt = function(sterm) {
+	var self = this;
+
+	self.data = [];
+	self.handle_error = function(data) {
+		console.log(data);
+		_search.push_results("ish", {name: "No results found"});
+	};
+
+	self.searchComplete = function(data) {
+		if (!_search || data.length < 1 || !(data instanceof Object)) return self.handle_error(data);
+		self.data = data;
+		var first = data[0];
+		_search.push_results("ish", {
+			name: first.name,
+			seeds: first.seeder,
+			magnet: first.magnet
+		});
+	};
+
+	self.searchIsoHunt = function(keywords) {
+		var url = _settings.ish_api;
+		url += "?ihq=" + keywords + "&sort=seeds";
+		$.getJSON(url, self.searchComplete).error(self.handle_error);
+	};
+
+	if (sterm) return self.searchIsoHunt(sterm);
 };
 
 var TPBay = function(sterm) {
@@ -68,7 +106,7 @@ var SearchHandler = function(sterm) {
 	var self = this;
 	sterm = sterm || null;
 	self.cb = [];
-	self.providers = ["tpb", "fen"];
+	self.providers = ["tpb", "fen", "ish"];
 	self.results = {};
 
 	self.search = function(sterm, cb) {
@@ -76,6 +114,7 @@ var SearchHandler = function(sterm) {
 		self.cb.push(cb);
 		self.fen = new Fenopy(sterm);
 		self.tpb = new TPBay(sterm);
+		self.ish = new IsoHunt(sterm);
 	};
 
 	self.get_providers = function() {
