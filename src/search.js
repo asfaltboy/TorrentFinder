@@ -55,12 +55,12 @@ var IsoHunt = function(sterm) {
 
 	self.searchComplete = function(data) {
 		if (!_search || data.length < 1 || !(data instanceof Object)) return self.handle_error(data);
-		self.data = data;
-		var first = data[0];
+		self.data = data.items.list;
+		var first = self.data[0];
 		_search.push_results("ish", {
-			name: first.name,
-			seeds: first.seeder,
-			magnet: first.magnet
+			name: first.title,
+			seeds: first.Seeds,
+			torrent_link: first.enclosure_url
 		});
 	};
 

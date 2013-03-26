@@ -42,7 +42,17 @@ var SearchUI = function() {
 			Object.keys(data).forEach(function(k) {
 				item = data[k];
 				item.prov = k;
-				item.href = (!item.magnet) ? '' : "href=" + item.magnet;
+				if (item.magnet) {
+					item.href = "href=" + item.magnet;
+				} else if (item.torrent_link) {
+					item.href = "href=" + item.torrent_link;
+					item.download = "download=" + item.torrent_link.substring(
+						item.torrent_link.lastIndexOf('/') + 1);
+				} else {
+					console.log("No link found for provider " + k + "'s result");
+					return true;
+				}
+				item.title = "title=" + item.name;
 				items.push(item);
 			});
 			tb = Mustache.to_html(
