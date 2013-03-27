@@ -55,6 +55,7 @@ var IsoHunt = function(sterm) {
 
 	self.searchComplete = function(data) {
 		if (!_search || data.length < 1 || !(data instanceof Object)) return self.handle_error(data);
+		if (!data.items || data.total_results < 1) return self.handle_error(data);
 		self.data = data.items.list;
 		var first = self.data[0];
 		_search.push_results("ish", {
