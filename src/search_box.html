@@ -4,6 +4,7 @@
 			<tr>
 				<th>prov</th>
 				<th>name</th>
+				<th>links</th>
 				<th>seeds</th>
 			</tr>
 		</thead>
@@ -11,7 +12,26 @@
 			{{#items}}
 				<tr>
 					<td>{{prov}}</td>
-					<td><a {{href}} {{download}} {{title}}>{{name}}</a></td>
+					<td title="{{name}}">{{{name}}}</td>
+					<td>
+						{{#if magnet}}
+							<a href="{{magnet}}"><img src="{{mag_img}}" alt="magnet"></a>
+						{{else}}
+							<img src="{{mag_img}}" alt="magnet">
+						{{/if}}
+
+						{{#if webpage}}
+							<a href="{{webpage}}" target="_blank"><img src="{{web_img}}" alt="webpage"></a>
+						{{else}}
+							<img src="{{web_img}}" alt="webpage">
+						{{/if}}
+
+						{{#if torrent}}
+							<a href="{{torrent}}" download="{{download}}"><img src="{{tor_img}}" alt="torrent"></a>
+						{{else}}
+							<img src="{{tor_img}}" alt="torrent">
+						{{/if}}
+					</td>
 					<td>{{seeds}}</td>
 				</tr>
 			{{/items}}

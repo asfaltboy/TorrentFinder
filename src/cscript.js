@@ -2,6 +2,13 @@ var SearchUI = function() {
     var self = this;
 
     self.selector = '.torrent_find_0d1fc2b95';
+    self.mag_img = chrome.extension.getURL('img/magnet.png');
+    self.mag_img_disabled = chrome.extension.getURL('img/magnet_disabled.png');
+    self.web_img = chrome.extension.getURL('img/webpage.png');
+    self.web_img_disabled = chrome.extension.getURL('img/webpage_disabled.png');
+    self.tor_img = chrome.extension.getURL('img/torrent.png');
+    self.tor_img_disabled = chrome.extension.getURL('img/torrent_disabled.png');
+    self.template_url = chrome.extension.getURL('search_box.html');
 
     self.registerClickHandlers = function(selector) {
         $('.close', selector).click(function(evt) {
@@ -33,42 +40,61 @@ var SearchUI = function() {
         return parentOffset;
     };
 
-    self.drawBox = function(data) {
-        var template_url = chrome.extension.getURL('search_box.html'),
-            items = [], item, tb;
+    self.parse_item = function(provider_name, item) {
+        item.prov = provider_name;
 
-        $.get(template_url, function(tmpl) {
-            console.log('Rendering Mustache.js template...');
-            Object.keys(data).forEach(function(k) {
-                item = data[k];
-                item.prov = k;
-                if (item.magnet) {
-                    item.href = "href=" + item.magnet;
-                } else if (item.torrent_link) {
-                    item.href = "href=" + item.torrent_link;
-                    item.download = "download=" + item.torrent_link.substring(
-                        item.torrent_link.lastIndexOf('/') + 1);
-                } else {
-                    console.log("No link found for provider " + k + "'s result");
-                    return true;
-                }
-                item.title = "title=" + item.name;
-                items.push(item);
-            });
-            tb = Mustache.to_html(
-                tmpl,
-                {
-                    items: items
-                }
-            );
-            $(self.selector).remove();
-            $('body').prepend(tb);
-            $(self.selector).offset(self.calcOffset()).fadeIn().drags();
-            self.registerClickHandlers(self.selector);
+        // webpage link + image
+        if (item.webpage) {
+            item.web_img = self.web_img;
+        } else {
+            item.webpage = "";
+            self.web_img = self.web_img_disabled;
+        }
+
+        if (item.magnet) {
+            item.mag_img = self.mag_img;
+        } else {
+            item.magnet = "";
+            item.mag_img = self.mag_img_disabled;
+        }
+
+        if (item.torrent) {
+            item.download = item.torrent.substring(
+                item.torrent.lastIndexOf('/') +
+            1);
+            item.tor_img = self.tor_img;
+        } else {
+            item.torrent = "";
+            item.tor_img = self.tor_img_disabled;
+        }
+        return item;
+    };
+
+    self.on_template_received = function(tmpl, items) {
+        console.log('Rendering Handlebars.js template');
+        var template_div = Handlebars.compile(tmpl),
+            result_div = template_div({items: items});
+
+        console.log('Cleaning up existing div and inserting the new one');
+        $(self.selector).remove();
+        $('body').prepend(result_div);
+        $(self.selector).offset(self.calcOffset()).fadeIn().drags();
+        self.registerClickHandlers(self.selector);
+    };
+
+    self.drawBox = function(data) {
+        var items = [];
+        console.log("Parsing items from bkg");
+        $.each(data, function(key, val) {
+            items.push(self.parse_item(key, val));
         });
+
+        console.log('Loading template from extension');
+        $.get(self.template_url, function(tmpl) {self.on_template_received(tmpl, items);});
     };
 
     self.displayResults = function(results) {
+        console.log("Received results: ");
         console.log(results);
         self.drawBox(results);
     };

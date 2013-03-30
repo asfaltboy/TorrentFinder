@@ -1,9 +1,9 @@
 {
-	"name": "torrent finder",
+	"name": "Torrent Finder",
 	"homepage_url": "https://github.com/asfaltboy/torrent_finder",
-	"version": "0.1.2",
+	"version": "0.5",
 	"manifest_version": 2,
-	"description": "find magnet links directly from any page",
+	"description": "Find torrent/magnet links directly from any page. Just select and right click to use.",
 	"background": {
 		"scripts":
 			[
@@ -23,14 +23,20 @@
 		"contextMenus",
 		"http://*/*"
 	],
-	"web_accessible_resources": [
-		"search_box.html"
-	],
 	"content_scripts": [
 		{
 			"matches": ["http://*/*", "https://*/*"],
 			"css": ["search_box.css"],
-			"js": ["jquery-1.7.1.min.js", "mustache.js", "cscript.js"]
+			"js": ["jquery-1.7.1.min.js", "handlebars.js", "cscript.js"]
 		}
+	],
+	"web_accessible_resources": [
+		"search_box.html",
+		"img/magnet.png",
+		"img/magnet_disabled.png",
+		"img/torrent.png",
+		"img/torrent_disabled.png",
+		"img/webpage.png",
+		"img/webpage_disabled.png"
 	]
 }

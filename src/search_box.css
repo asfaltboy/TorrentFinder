@@ -42,12 +42,18 @@
 }
 
 .torrent_find_0d1fc2b95 td:nth-of-type(3), .torrent_find_0d1fc2b95 th:nth-of-type(3) {
-    width: 30%;
+    width: 15%;
     white-space:nowrap;
+    cursor: initial;
+}
+
+.torrent_find_0d1fc2b95 td:nth-of-type(3) img, .torrent_find_0d1fc2b95 th:nth-of-type(3) img {
+    width: 16px;
+    height: 16px;
 }
 
 .torrent_find_0d1fc2b95 td:nth-of-type(4), .torrent_find_0d1fc2b95 th:nth-of-type(4) {
-    width: 10%;
+    width: 25%;
     text-align: center;
 }
 

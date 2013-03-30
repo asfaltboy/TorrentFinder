@@ -31,7 +31,9 @@ var Fenopy = function(sterm) {
 		_search.push_results("fen", {
 			name: first.name,
 			seeds: first.seeder,
-			magnet: first.magnet
+			magnet: first.magnet,
+			torrent: first.torrent,
+			webpage: first.page
 		});
 	};
 
@@ -63,7 +65,8 @@ var IsoHunt = function(sterm) {
 		_search.push_results("ish", {
 			name: first.title,
 			seeds: first.Seeds,
-			torrent_link: first.enclosure_url
+			torrent: first.enclosure_url,
+			webpage: first.link
 		});
 	};
 
@@ -94,7 +97,8 @@ var TPBay = function(sterm) {
 		_search.push_results("tpb", {
 			name: first.name,
 			seeds: first.seeders,
-			magnet: first.magnet
+			magnet: first.magnet,
+			webpage: "http://thepiratebay.se/torrent/" + first.id + "/" + first.name.replace(" ", "_")
 		});
 	};
 
