@@ -10,7 +10,7 @@ A chrome extension to shorten your search for torrents
 
 ## Instructions
 
-1. Install crx
+1. Install the crx (latest version can be downloaded from [Google Chrome's WebStore](https://chrome.google.com/webstore/detail/torrent-finder/mejjkppjoaepiohjhjljbopdolidnndh))
 2. Browse any website (http/s)
 3. Right click your target search query
 4. Search for torrent links
@@ -18,3 +18,7 @@ A chrome extension to shorten your search for torrents
 ## Contribute
 
 If you wish to contribute to TorrentFinder, you may open issues and submit pull request!
+
+## Icons
+
+Thanks to [Oded Karlinski](http://www.odk.co.il/) for the iconset.
