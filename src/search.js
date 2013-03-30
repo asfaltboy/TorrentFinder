@@ -35,13 +35,13 @@ var Fenopy = function(sterm) {
 		});
 	};
 
-	self.searchFenopy = function(keywords) {
+	self.search = function(keywords) {
 		var url = _settings.fenopy_api;
 		url += "?keyword=" + keywords + "&format=json&sort=peer";
 		$.getJSON(url, self.searchComplete).error(self.handle_error);
 	};
 
-	if (sterm) return self.searchFenopy(sterm);
+	if (sterm) return self.search(sterm);
 };
 
 var IsoHunt = function(sterm) {
@@ -54,7 +54,9 @@ var IsoHunt = function(sterm) {
 	};
 
 	self.searchComplete = function(data) {
-		if (!_search || data.length < 1 || !(data instanceof Object)) return self.handle_error(data);
+		if (!_search || data.length < 1 || !(data instanceof Object))
+			return self.handle_error(data);
+
 		if (!data.items || data.total_results < 1) return self.handle_error(data);
 		self.data = data.items.list;
 		var first = self.data[0];
@@ -65,13 +67,13 @@ var IsoHunt = function(sterm) {
 		});
 	};
 
-	self.searchIsoHunt = function(keywords) {
+	self.search = function(keywords) {
 		var url = _settings.ish_api;
 		url += "?ihq=" + keywords + "&sort=seeds";
 		$.getJSON(url, self.searchComplete).error(self.handle_error);
 	};
 
-	if (sterm) return self.searchIsoHunt(sterm);
+	if (sterm) return self.search(sterm);
 };
 
 var TPBay = function(sterm) {
@@ -84,7 +86,9 @@ var TPBay = function(sterm) {
 	};
 
 	self.searchComplete = function(data) {
-		if (!_search || data.length < 1 || !(data instanceof Object)) return self.handle_error(data);
+		if (!_search || data.length < 1 || !(data instanceof Object))
+			return self.handle_error(data);
+
 		self.data = data;
 		var first = data[0];
 		_search.push_results("tpb", {
@@ -94,13 +98,13 @@ var TPBay = function(sterm) {
 		});
 	};
 
-	self.searchTPBay = function(keywords) {
+	self.search = function(keywords) {
 		var url = _settings.tpb_api;
 		url += "?id=" + keywords + "&sort=seeders";
 		$.getJSON(url, self.searchComplete).error(self.handle_error);
 	};
 
-	if (sterm) return self.searchTPBay(sterm);
+	if (sterm) return self.search(sterm);
 };
 
 var SearchHandler = function(sterm) {
@@ -113,9 +117,9 @@ var SearchHandler = function(sterm) {
 	self.search = function(sterm, cb) {
 		if (!sterm || !cb) return;
 		self.cb.push(cb);
-		self.fen = new Fenopy(sterm);
-		self.tpb = new TPBay(sterm);
-		self.ish = new IsoHunt(sterm);
+		self.fen = (self.fen) ? self.fen.search(sterm) : new Fenopy(sterm);
+		self.tpb = (self.tpb) ? self.tpb.search(sterm) : new TPBay(sterm);
+		self.ish = (self.ish) ? self.ish.search(sterm) : new IsoHunt(sterm);
 	};
 
 	self.get_providers = function() {
@@ -123,8 +127,6 @@ var SearchHandler = function(sterm) {
 	};
 
 	self.push_results = function(provider, best_result) {
-		// console.log("received best result from " + provider);
-		// console.log(best_result);
 		self.results[provider] = best_result;
 		if (Object.keys(self.results).length === self.providers.length) {
 			var callbacks = self.cb;
@@ -132,6 +134,7 @@ var SearchHandler = function(sterm) {
 			callbacks.forEach(function(cb) {
 				cb(self.results);
 			});
+			self.results = {};
 		}
 	};
 
