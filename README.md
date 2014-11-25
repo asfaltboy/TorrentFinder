@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/asfaltboy/TorrentFinder.png?label=ready&title=Ready)](https://waffle.io/asfaltboy/TorrentFinder)
 # TorrentFinder
 
 A chrome extension to shorten your search for torrents
