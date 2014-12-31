@@ -1,6 +1,8 @@
 [![Stories in Ready](https://badge.waffle.io/asfaltboy/TorrentFinder.png?label=ready&title=Ready)](https://waffle.io/asfaltboy/TorrentFinder)
 # TorrentFinder
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/asfaltboy/TorrentFinder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 A chrome extension to shorten your search for torrents
 
 
